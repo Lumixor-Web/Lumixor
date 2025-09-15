@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumixor | Web Development</title>
+<link rel="icon" type="image/png" href="LUMIXOR.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif;}
+body {color:#fff; background:#000; overflow-x:hidden;}
+a {text-decoration:none; color:inherit;}
+
+/* Header */
+header {background:#111; color:#fff; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; border-radius:0 0 20px 20px;}
+.logo {display:flex; align-items:center;}
+.logo img {height:50px; width:50px; margin-right:15px; border-radius:50%; background:#fff;}
+header h1 {font-size:1.8rem; font-weight:700;}
+nav a {margin-left:20px; font-weight:600; transition:0.3s;}
+nav a:hover {color:#ccc;}
+
+/* Sections */
+section {padding:100px 20px; border-radius:20px; margin:30px auto; max-width:1200px; opacity:0; transform:translateY(50px); transition:1s ease;}
+section.visible {opacity:1; transform:translateY(0);}
+
+/* Hero */
+.hero {text-align:center; min-height:90vh; display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; background:url('https://via.placeholder.com/1600x900') no-repeat center center/cover; border-radius:20px; overflow:hidden;}
+.hero h2 {font-size:3rem; margin-bottom:20px; color:#fff; text-shadow:1px 1px 10px #000;}
+.hero p {font-size:1.2rem; margin-bottom:30px; color:#fff; text-shadow:1px 1px 8px #000;}
+.hero button {padding:12px 25px; font-size:1rem; border:none; background:#fff; color:#000; font-weight:600; cursor:pointer; border-radius:15px; z-index:2; position:relative;}
+#particles {position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;}
+
+/* Services */
+.services h3 {text-align:center; font-size:2rem; margin-bottom:50px; color:#fff;}
+.service-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px;}
+.card {background:#222; padding:30px; border-radius:20px; text-align:center; box-shadow:0 10px 20px rgba(255,255,255,0.2); transition:0.3s;}
+.card:hover {transform:translateY(-10px) scale(1.05);}
+.card h4 {color:#fff; margin-bottom:15px;}
+.card p {color:#ccc; margin-bottom:10px;}
+.card strong {color:#fff;}
+
+/* Packages */
+.package-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; margin-top:50px;}
+.package-card {background:#222; border-radius:20px; padding:30px; text-align:center; box-shadow:0 10px 20px rgba(255,255,255,0.2); transition:0.3s;}
+.package-card:hover {transform:translateY(-10px) scale(1.05);}
+.package-card h4 {color:#fff; margin-bottom:15px; font-size:1.5rem;}
+.package-card p {color:#fff; margin-bottom:20px; font-size:1.2rem;}
+.package-card ul {list-style:none; padding-left:0; margin-bottom:20px; color:#ccc;}
+.package-card li {margin:10px 0;}
+.package-card button {padding:12px 25px; border:none; background:#fff; color:#000; font-weight:600; border-radius:15px; cursor:pointer;}
+
+/* Portfolio */
+.portfolio h3 {color:#fff; text-align:center; margin-bottom:50px;}
+.portfolio-items {display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px;}
+.portfolio-item {background:#222; border-radius:20px; overflow:hidden; text-align:center; cursor:pointer; box-shadow:0 10px 20px rgba(255,255,255,0.2); transition:0.3s;}
+.portfolio-item img {width:100%; border-radius:20px 20px 0 0;}
+.portfolio-item h4 {padding:15px; background:#000; color:#fff; border-radius:0 0 20px 20px;}
+.portfolio-item:hover {transform:scale(1.05);}
+
+/* Contact */
+.contact {background:#000; display:flex; justify-content:center; align-items:center; padding:80px 20px;}
+.contact-card {
+  background:#111;
+  padding:50px 40px;
+  border-radius:25px;
+  text-align:center;
+  max-width:600px;
+  transition: transform 0.3s;
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+  animation: glowPulse 2s infinite alternate;
+}
+.contact-card h3 {font-size:2rem; margin-bottom:20px; color:#fff;}
+.contact-card p {color:#fff; font-size:1.2rem;}
+.contact-card a {color:#fff; font-weight:600; text-decoration:underline; transition:0.3s;}
+.contact-card a:hover {color:#ccc;}
+@keyframes glowPulse {0% {box-shadow:0 0 20px rgba(255,255,255,0.3);} 100% {box-shadow:0 0 50px rgba(255,255,255,0.5);}}
+
+/* Footer */
+footer {display:flex; justify-content:center; align-items:center; background:#111; padding:30px 20px; border-radius:20px;}
+footer p {color:#fff; margin:0; font-weight:600;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="LUMIXOR.png" alt="Logo">
+    <h1>Lumixor</h1>
+  </div>
+  <nav>
+    <a href="#services">Services</a>
+    <a href="#packages">Packages</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <canvas id="particles"></canvas>
+  <h2>LUMIXOR</h2>
+  <p>We create fast, scalable, and beautiful websites for your business.</p>
+  <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+</section>
+
+<section class="services" id="services">
+  <h3>Our Services</h3>
+  <div class="service-cards">
+    <div class="card"><h4>Web Development</h4><p>Custom websites, apps, and full-stack solutions tailored to your needs.</p></div>
+    <div class="card"><h4>UI/UX Design</h4><p>Beautiful and user-friendly designs that engage your audience.</p></div>
+    <div class="card"><h4>SEO & Marketing</h4><p>Improve your online visibility and reach more customers.</p></div>
+  </div>
+</section>
+
+<section class="services" id="packages">
+  <h3>Our Packages</h3>
+  <div class="package-cards">
+    <div class="package-card">
+      <h4>Basic</h4>
+      <p><strong>$150 + $0/month</strong></p>
+      <ul><li>1–5 Pages Website</li><li>All hosted on GitHub</li><li>No custom domain</li></ul>
+      <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+    </div>
+    <div class="package-card">
+      <h4>Pro</h4>
+      <p><strong>$200 + $50/month</strong></p>
+      <ul><li>1–10 Pages Website</li><li>Custom Domain Included</li><li>Responsive Design</li></ul>
+      <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+    </div>
+    <div class="package-card">
+      <h4>Deluxe</h4>
+      <p><strong>$500 + $100/month</strong></p>
+      <ul><li>Custom Website—pretty much whatever you want</li><li>Advanced Features & Integrations</li><li>Full Support & Maintenance</li></ul>
+      <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+    </div>
+  </div>
+</section>
+
+<section class="portfolio" id="portfolio">
+  <h3>Our Portfolio</h3>
+  <div class="portfolio-items">
+    <div class="portfolio-item"><img src="example1.png"><h4>EXAMPLE</h4></div>
+    <div class="portfolio-item"><img src="example2.png"><h4>EXAMPLE</h4></div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-card">
+    <h3>Contact Us</h3>
+    <p>Email us at: <a href="mailto:lumixorcontact@gmail.com">lumixorcontact@gmail.com</a></p>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Lumixor. All rights reserved.</p>
+</footer>
+
+<script>
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {if(entry.isIntersecting){entry.target.classList.add('visible');}});
+},{threshold:0.3});
+document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+
+// Particle effect in hero
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particlesArray = [], mouse = {x:null, y:null};
+
+function resizeCanvas() {canvas.width = window.innerWidth; canvas.height = document.querySelector('.hero').offsetHeight;}
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+window.addEventListener('mousemove', e=>{mouse.x=e.x; mouse.y=e.y;});
+
+function initParticles() {
+  particlesArray = [];
+  for(let i=0;i<100;i++){
+    particlesArray.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*3+1, speedX:(Math.random()-0.5)*0.5, speedY:(Math.random()-0.5)*0.5});
+  }
+}
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particlesArray.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.fill();
+    p.x+=p.speedX; p.y+=p.speedY;
+    if(mouse.x && mouse.y){
+      let dx=p.x-mouse.x, dy=p.y-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<100){let angle=Math.atan2(dy,dx), force=(100-dist)/10; p.x+=Math.cos(angle)*force; p.y+=Math.sin(angle)*force;}
+    }
+    if(p.x<0)p.x=canvas.width; if(p.x>canvas.width)p.x=0;
+    if(p.y<0)p.y=canvas.height; if(p.y>canvas.height)p.y=0;
+  });
+  requestAnimationFrame(animateParticles);
+}
+initParticles(); animateParticles();
+</script>
+
+</body>
+</html>
