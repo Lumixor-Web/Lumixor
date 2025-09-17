@@ -62,7 +62,7 @@ section.visible {opacity:1; transform:translateY(0);}
   position:absolute; 
   inset:0; 
   background:rgba(0,0,0,0.5); 
-  box-shadow: 0 0 60px rgba(255,255,255,0.1); /* subtle glow */
+  box-shadow: 0 0 60px rgba(255,255,255,0.1);
 }
 .hero .glass {
   position:relative; z-index:2; padding:50px; text-align:center; max-width:800px; box-shadow:0 8px 32px rgba(0,0,0,0.2);
@@ -74,17 +74,23 @@ section.visible {opacity:1; transform:translateY(0);}
 
 /* Services */
 .services h3 {text-align:center; font-size:2rem; margin-bottom:50px; color:#fff;}
-.service-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px;}
-.card {
-  padding:30px;
-  text-align:center;
+.service-cards {display:flex; flex-direction:column; gap:60px;}
+.service-card {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:40px;
+  padding:40px;
   border-radius:25px;
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(25px);
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
 }
-.card h4 {color:#fff; margin-bottom:15px; font-size:1.5rem;}
-.card p {color:#ccc; font-size:1rem; line-height:1.6;}
+.service-card:nth-child(even) {flex-direction:row-reverse;}
+.service-card h4 {color:#fff; margin-bottom:15px; font-size:1.8rem;}
+.service-card p {color:#ccc; font-size:1.1rem; line-height:1.6; max-width:500px;}
+.service-card .text {flex:1;}
+.service-card .desc {flex:1;}
 
 /* Packages */
 .package-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px; margin-top:50px;}
@@ -103,14 +109,7 @@ section.visible {opacity:1; transform:translateY(0);}
 .package-card li {margin:10px 0;}
 .package-card button {padding:12px 25px; border:none; background:#fff; color:#000; font-weight:600; border-radius:15px; cursor:pointer; transition:0.3s;}
 .package-card button:hover {background:#eee;}
-
-/* Pro package bigger and highlighted */
-.package-card.pro {
-  transform: scale(1.1);
-  z-index:2;
-  background: rgba(255,255,255,0.1);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-}
+.package-card.pro {transform: scale(1.1); z-index:2; background: rgba(255,255,255,0.1); box-shadow: 0 12px 40px rgba(0,0,0,0.4);}
 
 /* Portfolio */
 .portfolio h3 {color:#fff; text-align:center; margin-bottom:50px;}
@@ -170,9 +169,18 @@ footer p {color:#fff; margin:0; font-weight:600;}
 <section class="services" id="services">
   <h3>Our Services</h3>
   <div class="service-cards">
-    <div class="card"><h4>Web Development</h4><p>Custom websites, apps, and full-stack solutions tailored to your needs.</p></div>
-    <div class="card"><h4>UI/UX Design</h4><p>Beautiful and user-friendly designs that engage your audience.</p></div>
-    <div class="card"><h4>SEO & Marketing</h4><p>Improve your online visibility and reach more customers.</p></div>
+    <div class="service-card">
+      <div class="text"><h4>Web Development</h4></div>
+      <div class="desc"><p>Custom websites, apps, and full-stack solutions tailored to your needs.</p></div>
+    </div>
+    <div class="service-card">
+      <div class="text"><h4>UI/UX Design</h4></div>
+      <div class="desc"><p>Beautiful and user-friendly designs that engage your audience.</p></div>
+    </div>
+    <div class="service-card">
+      <div class="text"><h4>SEO & Marketing</h4></div>
+      <div class="desc"><p>Improve your online visibility and reach more customers.</p></div>
+    </div>
   </div>
 </section>
 
@@ -226,13 +234,17 @@ const observer = new IntersectionObserver((entries) => {
 },{threshold:0.3});
 document.querySelectorAll('section').forEach(sec => observer.observe(sec));
 
-// Liquid Glass Particles
+// Liquid Glass Particles with Parallax
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particlesArray = [], mouse = {x:null, y:null};
 
-function resizeCanvas() {canvas.width = window.innerWidth; canvas.height = document.querySelector('.hero').offsetHeight;}
-resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = document.querySelector('.hero').offsetHeight;
+}
+resizeCanvas(); 
+window.addEventListener('resize', resizeCanvas);
 window.addEventListener('mousemove', e=>{mouse.x=e.x; mouse.y=e.y;});
 
 function initParticles() {
@@ -244,7 +256,8 @@ function initParticles() {
       size:Math.random()*4+1.5,
       speedX:(Math.random()-0.5)*0.6,
       speedY:(Math.random()-0.5)*0.6,
-      alpha: Math.random()*0.6+0.2
+      alpha: Math.random()*0.6+0.2,
+      depth: Math.random()*2+0.5
     });
   }
 }
@@ -258,10 +271,15 @@ function animateParticles(){
     ctx.shadowBlur = 10;
     ctx.shadowColor = 'rgba(255,255,255,0.3)';
     ctx.fill();
-    p.x+=p.speedX; p.y+=p.speedY;
+    p.x+=p.speedX*p.depth; 
+    p.y+=p.speedY*p.depth;
     if(mouse.x && mouse.y){
       let dx=p.x-mouse.x, dy=p.y-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<100){let angle=Math.atan2(dy,dx), force=(100-dist)/12; p.x+=Math.cos(angle)*force; p.y+=Math.sin(angle)*force;}
+      if(dist<120){
+        let angle=Math.atan2(dy,dx), force=(120-dist)/15;
+        p.x+=Math.cos(angle)*force; 
+        p.y+=Math.sin(angle)*force;
+      }
     }
     if(p.x<0)p.x=canvas.width; if(p.x>canvas.width)p.x=0;
     if(p.y<0)p.y=canvas.height; if(p.y>canvas.height)p.y=0;
@@ -269,7 +287,8 @@ function animateParticles(){
   requestAnimationFrame(animateParticles);
 }
 
-initParticles(); animateParticles();
+initParticles(); 
+animateParticles();
 </script>
 
 </body>
