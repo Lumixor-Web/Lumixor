@@ -20,7 +20,7 @@ a {text-decoration:none; color:inherit;}
   border-radius: 20px;
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Header */
@@ -76,9 +76,7 @@ section.visible {opacity:1; transform:translateY(0);}
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(25px);
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.card:hover {transform:translateY(-10px); box-shadow:0 15px 40px rgba(0,0,0,0.3);}
 .card h4 {color:#fff; margin-bottom:15px; font-size:1.5rem;}
 .card p {color:#ccc; font-size:1rem; line-height:1.6;}
 
@@ -91,9 +89,7 @@ section.visible {opacity:1; transform:translateY(0);}
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(25px);
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.package-card:hover {transform:translateY(-10px); box-shadow:0 15px 40px rgba(0,0,0,0.3);}
 .package-card h4 {color:#fff; margin-bottom:15px; font-size:1.5rem;}
 .package-card p {color:#fff; margin-bottom:20px; font-size:1.2rem;}
 .package-card ul {list-style:none; padding-left:0; margin-bottom:20px; color:#ccc;}
@@ -112,9 +108,7 @@ section.visible {opacity:1; transform:translateY(0);}
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(25px);
   box-shadow:0 8px 30px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.portfolio-item:hover {transform:scale(1.05); box-shadow:0 15px 40px rgba(0,0,0,0.3);}
 .portfolio-item img {width:100%; border-radius:25px 25px 0 0;}
 .portfolio-item h4 {padding:15px; background:rgba(0,0,0,0.6); border-radius:0 0 25px 25px; color:#fff;}
 
@@ -158,31 +152,31 @@ footer p {color:#fff; margin:0; font-weight:600;}
   </div>
 </section>
 
-<section class="services glass" id="services">
+<section class="services" id="services">
   <h3>Our Services</h3>
   <div class="service-cards">
-    <div class="card glass"><h4>Web Development</h4><p>Custom websites, apps, and full-stack solutions tailored to your needs.</p></div>
-    <div class="card glass"><h4>UI/UX Design</h4><p>Beautiful and user-friendly designs that engage your audience.</p></div>
-    <div class="card glass"><h4>SEO & Marketing</h4><p>Improve your online visibility and reach more customers.</p></div>
+    <div class="card"><h4>Web Development</h4><p>Custom websites, apps, and full-stack solutions tailored to your needs.</p></div>
+    <div class="card"><h4>UI/UX Design</h4><p>Beautiful and user-friendly designs that engage your audience.</p></div>
+    <div class="card"><h4>SEO & Marketing</h4><p>Improve your online visibility and reach more customers.</p></div>
   </div>
 </section>
 
-<section class="services glass" id="packages">
+<section class="services" id="packages">
   <h3>Our Packages</h3>
   <div class="package-cards">
-    <div class="package-card glass">
+    <div class="package-card">
       <h4>Basic</h4>
       <p><strong>$150 + $0/month</strong></p>
       <ul><li>1–5 Pages Website</li><li>All hosted on GitHub</li><li>No custom domain</li></ul>
       <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
     </div>
-    <div class="package-card glass">
+    <div class="package-card">
       <h4>Pro</h4>
       <p><strong>$200 + $50/month</strong></p>
       <ul><li>1–10 Pages Website</li><li>Custom Domain Included</li><li>Responsive Design</li></ul>
       <button onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
     </div>
-    <div class="package-card glass">
+    <div class="package-card">
       <h4>Deluxe</h4>
       <p><strong>$500 + $100/month</strong></p>
       <ul><li>Custom Website—pretty much whatever you want</li><li>Advanced Features & Integrations</li><li>Full Support & Maintenance</li></ul>
@@ -191,22 +185,22 @@ footer p {color:#fff; margin:0; font-weight:600;}
   </div>
 </section>
 
-<section class="portfolio glass" id="portfolio">
+<section class="portfolio" id="portfolio">
   <h3>Our Portfolio</h3>
   <div class="portfolio-items">
-    <div class="portfolio-item glass"><img src="example1.png"><h4>EXAMPLE</h4></div>
-    <div class="portfolio-item glass"><img src="example2.png"><h4>EXAMPLE</h4></div>
+    <div class="portfolio-item"><img src="example1.png"><h4>EXAMPLE</h4></div>
+    <div class="portfolio-item"><img src="example2.png"><h4>EXAMPLE</h4></div>
   </div>
 </section>
 
-<section class="contact glass" id="contact">
-  <div class="contact-card glass">
+<section class="contact" id="contact">
+  <div class="contact-card">
     <h3>Contact Us</h3>
     <p>Email us at: <a href="mailto:lumixorcontact@gmail.com">lumixorcontact@gmail.com</a></p>
   </div>
 </section>
 
-<footer class="glass">
+<footer>
   <p>&copy; 2025 Lumixor. All rights reserved.</p>
 </footer>
 
