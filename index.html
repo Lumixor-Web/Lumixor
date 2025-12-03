@@ -54,23 +54,17 @@ section.visible {opacity:1; transform:translateY(0);}
   min-height:90vh;
   display:flex; flex-direction:column; justify-content:center; align-items:center;
   position:relative;
-  background:url('https://via.placeholder.com/1600x900') no-repeat center center/cover;
   overflow:hidden;
 }
-.hero::before {
-  content:"";
-  position:absolute; 
-  inset:0; 
-  background:rgba(0,0,0,0.6); 
-  box-shadow: 0 0 60px rgba(255,255,255,0.1);
-}
+.hero canvas {position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;}
 .hero .glass {
   position:relative; z-index:2; padding:50px; text-align:center; max-width:800px; box-shadow:0 8px 32px rgba(0,0,0,0.2);
+  transition:transform 0.3s ease;
 }
-.hero h2 {font-size:3rem; margin-bottom:20px; color:#fff; text-shadow:1px 1px 10px #000;}
-.hero p {font-size:1.2rem; margin-bottom:30px; color:#fff; text-shadow:1px 1px 8px #000;}
+.hero h2 {font-size:3rem; margin-bottom:20px; color:#fff; text-shadow:1px 1px 12px #000;}
+.hero p {font-size:1.2rem; margin-bottom:30px; color:#fff; text-shadow:1px 1px 10px #000;}
 .hero button {padding:12px 25px; font-size:1rem; border:none; background:#fff; color:#000; font-weight:600; cursor:pointer; border-radius:15px; transition:0.3s;}
-.hero button:hover {background:#eee;}
+.hero button:hover {background:#eee; transform:scale(1.05);}
 
 /* Services */
 .services h3 {
@@ -96,9 +90,10 @@ section.visible {opacity:1; transform:translateY(0);}
   text-align:left;
   opacity:0;
   transform:translateY(50px);
-  transition:1s ease;
+  transition:1s ease, transform 0.3s ease;
 }
 .service-card.visible {opacity:1; transform:translateY(0);}
+.service-card:hover {transform:translateY(-10px) scale(1.03);}
 .service-card h4 {font-size:1.5rem; margin-bottom:10px; color:#fff;}
 .service-card p {font-size:1rem; line-height:1.6; color:#ccc;}
 .service-card .tags {margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;}
@@ -121,6 +116,7 @@ section.visible {opacity:1; transform:translateY(0);}
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
   transition: transform 0.3s, box-shadow 0.3s;
 }
+.package-card:hover {transform:scale(1.05);}
 .package-card h4 {color:#fff; margin-bottom:15px; font-size:1.5rem;}
 .package-card p {color:#fff; margin-bottom:20px; font-size:1.2rem;}
 .package-card ul {list-style:none; padding-left:0; margin-bottom:20px; color:#ccc;}
@@ -129,8 +125,6 @@ section.visible {opacity:1; transform:translateY(0);}
 .package-card button:hover {background:#eee;}
 
 .package-card.pro {
-  transform: scale(1.05);
-  z-index:2;
   background: rgba(255,255,255,0.1);
   box-shadow: 0 12px 40px rgba(0,0,0,0.4);
 }
@@ -163,9 +157,6 @@ section.visible {opacity:1; transform:translateY(0);}
 /* Footer */
 footer {display:flex; justify-content:center; align-items:center; padding:30px 20px; border-top:1px solid rgba(255,255,255,0.2);}
 footer p {color:#fff; margin:0; font-weight:600;}
-
-/* Particle canvas */
-#particles {position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;}
 </style>
 </head>
 <body>
@@ -184,6 +175,7 @@ footer p {color:#fff; margin:0; font-weight:600;}
 </header>
 
 <section class="hero">
+  <canvas id="codeRain"></canvas>
   <canvas id="particles"></canvas>
   <div class="glass">
     <h2>LUMIXOR</h2>
@@ -280,6 +272,7 @@ footer p {color:#fff; margin:0; font-weight:600;}
 </footer>
 
 <script>
+// IntersectionObserver for animations
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if(entry.isIntersecting){
@@ -289,20 +282,21 @@ const observer = new IntersectionObserver((entries) => {
 },{threshold:0.2});
 document.querySelectorAll('section, .service-card').forEach(sec => observer.observe(sec));
 
-// Particles
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
+/* PARTICLES */
+const particleCanvas = document.getElementById('particles');
+const pCtx = particleCanvas.getContext('2d');
 let particlesArray = [], mouse = {x:null, y:null};
-function resizeCanvas() {canvas.width = window.innerWidth; canvas.height = document.querySelector('.hero').offsetHeight;}
-resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+function resizeCanvas() {particleCanvas.width = window.innerWidth; particleCanvas.height = document.querySelector('.hero').offsetHeight; codeCanvas.width=window.innerWidth; codeCanvas.height=document.querySelector('.hero').offsetHeight;}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 window.addEventListener('mousemove', e=>{mouse.x=e.x; mouse.y=e.y;});
 
 function initParticles() {
   particlesArray = [];
   for(let i=0;i<120;i++){
     particlesArray.push({
-      x:Math.random()*canvas.width,
-      y:Math.random()*canvas.height,
+      x:Math.random()*particleCanvas.width,
+      y:Math.random()*particleCanvas.height,
       size:Math.random()*4+1.5,
       speedX:(Math.random()-0.5)*0.6,
       speedY:(Math.random()-0.5)*0.6,
@@ -310,26 +304,55 @@ function initParticles() {
     });
   }
 }
+
 function animateParticles(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pCtx.clearRect(0,0,particleCanvas.width,particleCanvas.height);
   particlesArray.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${p.alpha})`;
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = 'rgba(255,255,255,0.3)';
-    ctx.fill();
+    pCtx.beginPath();
+    pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    pCtx.fillStyle=`rgba(0,255,255,${p.alpha})`;
+    pCtx.shadowBlur = 10;
+    pCtx.shadowColor = 'rgba(0,255,255,0.3)';
+    pCtx.fill();
     p.x+=p.speedX; p.y+=p.speedY;
+
     if(mouse.x && mouse.y){
       let dx=p.x-mouse.x, dy=p.y-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<100){let angle=Math.atan2(dy,dx), force=(100-dist)/12; p.x+=Math.cos(angle)*force; p.y+=Math.sin(angle)*force;}
+      if(dist<120){let angle=Math.atan2(dy,dx), force=(120-dist)/12; p.x+=Math.cos(angle)*force; p.y+=Math.sin(angle)*force;}
     }
-    if(p.x<0)p.x=canvas.width; if(p.x>canvas.width)p.x=0;
-    if(p.y<0)p.y=canvas.height; if(p.y>canvas.height)p.y=0;
+
+    if(p.x<0)p.x=particleCanvas.width; if(p.x>particleCanvas.width)p.x=0;
+    if(p.y<0)p.y=particleCanvas.height; if(p.y>particleCanvas.height)p.y=0;
   });
   requestAnimationFrame(animateParticles);
 }
 initParticles(); animateParticles();
+
+/* CODE RAIN */
+const codeCanvas = document.getElementById('codeRain');
+const codeCtx = codeCanvas.getContext('2d');
+const letters = '01{}[]()<>=+-*/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const fontSize = 16;
+let columns = Math.floor(codeCanvas.width / fontSize);
+let drops = Array(columns).fill(1);
+
+function drawCode() {
+  codeCtx.fillStyle = 'rgba(0,0,0,0.1)';
+  codeCtx.fillRect(0,0,codeCanvas.width,codeCanvas.height);
+
+  codeCtx.fillStyle = '#0f0';
+  codeCtx.font = fontSize + 'px monospace';
+
+  for(let i=0; i<drops.length; i++){
+    const text = letters.charAt(Math.floor(Math.random()*letters.length));
+    codeCtx.fillText(text, i*fontSize, drops[i]*fontSize);
+    if(drops[i]*fontSize > codeCanvas.height && Math.random() > 0.975){ drops[i] = 0; }
+    drops[i]++;
+  }
+
+  requestAnimationFrame(drawCode);
+}
+drawCode();
 </script>
 
 </body>
